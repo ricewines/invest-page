@@ -11,7 +11,7 @@ import axios from 'axios'
 app.use(Vant)
 
 // 配置后端接口地址
-axios.defaults.baseURL = '/api'
+axios.defaults.baseURL = '/invest/accounting/api'
 app.config.globalProperties.$axios = axios
 import router from './router'
 app.use(router)
