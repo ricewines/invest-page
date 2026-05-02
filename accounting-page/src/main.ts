@@ -11,7 +11,7 @@ import axios from 'axios'
 app.use(Vant)
 
 // 配置后端接口地址
-axios.defaults.baseURL = 'http://localhost:8080/api'
+axios.defaults.baseURL = '/api'
 app.config.globalProperties.$axios = axios
 import router from './router'
 app.use(router)

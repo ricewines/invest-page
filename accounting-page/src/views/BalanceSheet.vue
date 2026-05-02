@@ -55,16 +55,16 @@
   </div>
 </template>
 
-<script setup>
-import { ref, reactive } from 'vue'
+<script lang="ts" setup>
+import { ref } from 'vue'
 import axios from 'axios'
 
 const startDate = ref('2025-01-01')
 const endDate = ref('2025-12-31')
 
-const assets = ref([])
-const liabilities = ref([])
-const equity = ref([])
+const assets = ref<Array<{ code: string; name: string; balance: number }>>([])
+const liabilities = ref<Array<{ code: string; name: string; balance: number }>>([])
+const equity = ref<Array<{ code: string; name: string; balance: number }>>([])
 
 const loadData = () => {
   axios.get('/balance-sheet', {

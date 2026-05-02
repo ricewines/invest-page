@@ -97,7 +97,7 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ref, reactive, onMounted } from 'vue'
 import { showToast } from 'vant'
 import axios from 'axios'
@@ -106,13 +106,23 @@ const showAccountPicker = ref(false)
 const accountList = ref([])
 const currentEntryIndex = ref(0)
 
-const voucher = reactive({
+const voucher = reactive<Voucher>({
   voucherNo: 'PZ' + new Date().getTime(),
   voucherDate: new Date().toISOString().slice(0, 10),
   description: '',
   status: '草稿',
   ifrsBasis: 'IFRS',
+  entries: []
 })
+interface Voucher {
+  voucherNo: string
+  voucherDate: string
+  description: string
+  status: string
+  ifrsBasis: string
+  entries: any[]
+}
+
 
 const entries = ref([
   { accountName: '', accountId: null, debit: 0, credit: 0, remark: '' }
@@ -123,19 +133,19 @@ const totalCredit = ref(0)
 
 onMounted(() => {
   axios.get('/account/accounts').then(res => {
-    accountList.value = res.data.map(item => ({
+    accountList.value = res.data.map((item: { code: string; name: string; id: number }) => ({
       text: `${item.code} ${item.name}`,
       value: item.id
     }))
   })
 })
 
-const openAccountPicker = (index) => {
+const openAccountPicker = (index: number) => {
   currentEntryIndex.value = index
   showAccountPicker.value = true
 }
 
-const onSelectAccount = ({ selectedOptions }) => {
+const onSelectAccount = ({ selectedOptions }: { selectedOptions: any[] }) => {
   const entry = entries.value[currentEntryIndex.value]
   entry.accountName = selectedOptions[0].text
   entry.accountId = selectedOptions[0].value
@@ -147,8 +157,7 @@ const addEntry = () => {
     accountName: '', accountId: null, debit: 0, credit: 0, remark: ''
   })
 }
-
-const removeEntry = (index) => {
+const removeEntry = (index: number) => {
   if (entries.value.length === 1) {
     showToast('至少保留一笔分录')
     return
