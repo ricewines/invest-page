@@ -6,10 +6,10 @@ export default defineConfig({
   plugins: [vue()],
   server: {
     host: "0.0.0.0",
-    port: 5011,
+    port: 6013,
     proxy: {
-      "/api": {
-        target: "http://[::1]:5001",
+      "/invest/accounting/api": {
+        target: "http://[::1]:6011",
       },
     }
   },
