@@ -30,7 +30,7 @@ git add .
 ```
 
 ```shell
-git commit -m "#1 初始内容"
+git commit -m "#1 简易记账"
 ```
 
 ```shell
