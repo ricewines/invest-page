@@ -9,7 +9,9 @@ $$env:PATH+=";"+$env:USERPROFILE+"\AppData\Roaming\JetBrains\IntelliJIdea2026.1\
 ```
 
 ### 新的开发
-
+```shell
+cd ~\IdeaProjects\ricewines\invest-page\
+```
 ```shell
 $$env:INVEST_VERSION = (Get-Content "./version.txt" -Raw).Trim()
 ```
@@ -23,7 +25,7 @@ git add .
 ```
 
 ```shell
-git commit -m "#11 整理配置"
+git commit -m "#15 处理：统计周期：本月首日—今日，报表类型选择资产负债表；科目选择框设置为全屏/最大化；凭证保存成功后，自动新建空白凭证窗口；金额支持小数点，计算精度保留到分"
 ```
 
 ```shell
