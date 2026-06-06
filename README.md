@@ -18,6 +18,7 @@ $$env:INVEST_VERSION = (Get-Content "./version.txt" -Raw).Trim()
 
 ```shell
 echo "已设置版本：$env:INVEST_VERSION"
+echo "已设置版本：$env:PATH"
 ```
 
 ```shell
@@ -25,7 +26,7 @@ git add .
 ```
 
 ```shell
-git commit -m "#15 处理：统计周期：本月首日—今日，报表类型选择资产负债表；科目选择框设置为全屏/最大化；凭证保存成功后，自动新建空白凭证窗口；金额支持小数点，计算精度保留到分"
+git commit -m "#16 升级"
 ```
 
 ```shell
