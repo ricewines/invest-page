@@ -20,7 +20,7 @@ $ cd ~\IdeaProjects\ricewines\invest-page ; npm -v; $env:INVEST_VERSION = (Get-C
 ```
 
 ```shell
-git add . ; git commit -m "#17 增加投资管理" ; git tag -a v$env:INVEST_VERSION -m "发布版本$env:INVEST_VERSION"
+git add . ; git commit -m "#18 两个页面工程成功搭建" ; git tag -a v$env:INVEST_VERSION -m "发布版本$env:INVEST_VERSION"
 ```
 
 ```shell
@@ -37,5 +37,5 @@ npm login
 cd ./accounting-page ; npm publish
 ```
 ```shell
-cd ./invest-admin-page ; npm publish
+cd ../invest-admin-page ; npm publish
 ```
