@@ -9,7 +9,7 @@ const routes = [
 ]
 
 const routers = createRouter({
-    history: createWebHistory(),
+    history: createWebHistory("invest-admin-page"),
     routes
 })
 
