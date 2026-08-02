@@ -1,8 +1,7 @@
 <template>
-  <div>
-    <van-nav-bar title="资产负债" fixed/>
-    <van-nav-bar title="资产负债" />
-
+  <van-sticky>
+    <van-nav-bar title="资产负债表"/>
+  </van-sticky>
     <van-field
         v-model="startDate"
         label="开始日期"
@@ -22,34 +21,31 @@
         @click="loadData">查询报表
     </van-button>
 
-    <van-cell-group title="资产">
-      <van-cell
-          v-for="item in assets"
-          :key="item.code"
-          :title="item.name"
-          :value="item.balance"
-      />
-    </van-cell-group>
+    <van-index-bar :index-list="indexList" :sticky-offset-top="stickyOffsetTop">
+      <van-index-anchor index="资产">资产</van-index-anchor>
+        <van-cell
+            v-for="item in assets"
+            :key="item.code"
+            :title="item.name"
+            :value="item.balance"
+        />
 
-    <van-cell-group title="负债">
-      <van-cell
-          v-for="item in liabilities"
-          :key="item.code"
-          :title="item.name"
-          :value="item.balance"
-      />
-    </van-cell-group>
+      <van-index-anchor index="负债">负债</van-index-anchor>
+        <van-cell
+            v-for="item in liabilities"
+            :key="item.code"
+            :title="item.name"
+            :value="item.balance"
+        />
 
-    <van-cell-group title="权益">
-      <van-cell
-          v-for="item in equity"
-          :key="item.code"
-          :title="item.name"
-          :value="item.balance"
-      />
-    </van-cell-group>
-    -->
-  </div>
+      <van-index-anchor index="权益">权益</van-index-anchor>
+        <van-cell
+            v-for="item in equity"
+            :key="item.code"
+            :title="item.name"
+            :value="item.balance"
+        />
+    </van-index-bar>
 </template>
 
 <script lang="ts" setup>
@@ -77,6 +73,10 @@ const endDate = ref(getToday())
 const assets = ref<Array<{ code: string; name: string; balance: number }>>([])
 const liabilities = ref<Array<{ code: string; name: string; balance: number }>>([])
 const equity = ref<Array<{ code: string; name: string; balance: number }>>([])
+const indexList = ['资产', '负债', '权益']
+const stickyOffsetTop = Number.parseFloat(
+  getComputedStyle(document.documentElement).getPropertyValue('--van-tabbar-height')
+) || 0
 
 const loadData = () => {
   axios.get('/balance-sheet', {
