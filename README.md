@@ -1,41 +1,27 @@
-# Vue 3 + TypeScript + Vite
+# invest-page 前端项目
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## 技术栈
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+Vue 3 + TypeScript + Vite
 
+## 技术说明
 
-## 提交与发布
+1. 项目统一采用 Vue3 `<script setup>`
+   单文件组件语法，参考官方文档：[script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup)
+2. TS 工程化配置、IDE 推荐配置可查阅 Vue 官方 TS
+   指南：[Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup)
 
-### 环境
+## 项目模块说明
 
-```shell
-$$env:PATH+=";"+$env:USERPROFILE+"\AppData\Roaming\JetBrains\IntelliJIdea2026.1\node\versions\24.13.0\"
-```
+1. accounting-page：账务页面子模块
+2. invest-admin-page：投资管理后台页面子模块
 
-### 新的开发
+## 发布规范
 
-```shell
-$ cd ~\IdeaProjects\ricewines\invest-page ; npm -v; $env:INVEST_VERSION = (Get-Content "./version.txt" -Raw).Trim() ; echo "已设置版本：$env:INVEST_VERSION"
-```
+1. 版本统一读取根目录 `version.txt` 文件，全页面共用同一版本号 `INVEST_VERSION`
+2. 代码提交、版本标签、npm 包发布统一流程，操作步骤详见 HELP.md
+3. 发布前需完成 npm 仓库登录授权，分模块依次执行 publish 发布
 
-```shell
-git add . ; git commit -m "#18 两个页面工程成功搭建" ; git tag -a v$env:INVEST_VERSION -m "发布版本$env:INVEST_VERSION"
-```
+## 开发环境依赖
 
-```shell
-git push origin v$env:INVEST_VERSION ; git push origin dev_chixh
-```
-
-### 发布
-
-```shell
-npm login
-```
-
-```shell
-cd ./accounting-page ; npm publish
-```
-```shell
-cd ../invest-admin-page ; npm publish
-```
+Node.js 24.13.0（IDE内置Node版本）
