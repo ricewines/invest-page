@@ -1,132 +1,80 @@
 <template>
-  <div class="page-container">
-    <van-nav-bar title="凭证记账" fixed />
+  <van-sticky>
+    <van-nav-bar title="凭证记账" />
+  </van-sticky>
 
-    <van-form @submit="submit" class="content">
-      <van-field
-          v-model="voucher.voucherNo"
-          label="凭证号"
-          placeholder="自动生成"
-          readonly
-      />
-      <van-field
-          v-model="voucher.voucherDate"
-          label="日期"
-          type="date"
-          value-format="YYYY-MM-DD"
-      />
-      <van-field
-          v-model="voucher.description"
-          label="摘要"
-          placeholder="输入备注"
-      />
+    <van-form @submit="submit">
+      <van-index-bar :index-list="list.indexList" :sticky-offset-top="stickyOffsetTop">
+          <van-index-anchor index="1">凭证基本信息</van-index-anchor>
 
-      <div class="title">凭证明细（可添加多笔）</div>
+          <van-field v-model="voucher.voucherNo" label="凭证号" placeholder="自动生成" readonly />
+          <van-field v-model="voucher.voucherDate" label="日期" type="date" value-format="YYYY-MM-DD" />
+          <van-field v-model="voucher.description" label="摘要" placeholder="输入备注" />
 
-      <div
-          v-for="(entry, index) in entries"
-          :key="index"
-          class="entry-card"
-      >
-        <van-cell-group :border="false">
-          <van-field
-              :model-value="entry.accountName"
-              label="科目"
-              placeholder="点击选择科目"
-              is-link
-              @click="openAccountPicker(index)"
-          />
-          <!-- 改为支持小数 -->
-          <van-field
-              v-model="entry.debit"
-              label="借方金额"
-              type="number"
-              @change="calcTotal"
-          />
-          <van-field
-              v-model="entry.credit"
-              label="贷方金额"
-              type="number"
-              @change="calcTotal"
-          />
-        </van-cell-group>
+          <van-index-anchor index="2">凭证明细（可添加多笔）</van-index-anchor>
+            <div v-for="(entry, index) in entries" :key="index" class="entry-card">
+            <van-cell-group :border="false">
+              <van-field :model-value="entry.accountName" label="科目" placeholder="点击选择科目" is-link
+                @click="openAccountPicker(index)" />
+              <van-field v-model="entry.debit" label="借方金额" type="number" @change="calcTotal" />
+              <van-field v-model="entry.credit" label="贷方金额" type="number" @change="calcTotal" />
+            </van-cell-group>
+            <van-row justify="end">
+              <van-col span="6">
+                <van-button size="small" type="danger" plain @click="removeEntry(index)">
+                  删除此行
+                </van-button>
+              </van-col>
+            </van-row>
+          </div>
 
-        <div style="text-align: right; padding: 4px 12px">
-          <van-button
-              size="small"
-              type="danger"
-              plain
-              @click="removeEntry(index)"
-          >
-            删除此行
+          <van-button type="primary" plain block @click="addEntry" style="margin: 12px 0">
+            + 添加一笔分录
           </van-button>
-        </div>
-      </div>
+          <van-index-anchor index="3">凭证统计</van-index-anchor>
+          <van-cell-group style="margin-bottom: 12px">
+            <van-cell title="借方合计" :value="totalDebit" />
+            <van-cell title="贷方合计" :value="totalCredit" />
+          </van-cell-group>
 
-      <van-button
-          type="primary"
-          plain
-          block
-          @click="addEntry"
-          style="margin: 12px 0"
-      >
-        + 添加一笔分录
-      </van-button>
+          <van-button type="primary" block native-type="submit" style="margin: 0 0 12px">保存凭证（借贷必须相等）</van-button>
+      </van-index-bar>
 
-      <van-cell-group>
-        <van-cell title="借方合计" :value="totalDebit" />
-        <van-cell title="贷方合计" :value="totalCredit" />
-      </van-cell-group>
-
-      <van-button
-          type="primary"
-          block
-          native-type="submit"
-          style="margin-top: 16px"
-      >
-        保存凭证（借贷必须相等）
-      </van-button>
     </van-form>
 
-    <!-- 左右分栏科目选择弹窗 -->
-    <van-popup v-model:show="showAccountPicker" position="center" round class="account-popup">
-      <div class="picker-header">
-        <span class="picker-title">选择会计科目</span>
-        <van-icon name="cross" size="22" @click="showAccountPicker = false" />
-      </div>
-      <div class="split-picker">
-        <!-- 左侧分类 -->
-        <div class="left-category">
-          <div
-              v-for="cate in categoryList"
-              :key="cate.id"
-              class="cate-item"
-              :class="{ active: activeCateId === cate.id }"
-              @click="switchCategory(cate.id)"
-          >
-            {{ cate.name }}
-          </div>
-        </div>
-        <!-- 右侧科目列表 -->
-        <div class="right-account">
-          <div
-              v-for="acc in currentAccountList"
-              :key="acc.id"
-              class="acc-item"
-              @click="selectAccount(acc)"
-          >
-            {{ acc.text }}
-          </div>
+
+  <!-- 左右分栏科目选择弹窗 -->
+  <van-popup v-model:show="showAccountPicker" position="center" round class="account-popup">
+    <div class="picker-header">
+      <span class="picker-title">选择会计科目</span>
+      <van-icon name="cross" size="22" @click="showAccountPicker = false" />
+    </div>
+    <div class="split-picker">
+      <!-- 左侧分类 -->
+      <div class="left-category">
+        <div v-for="cate in categoryList" :key="cate.id" class="cate-item" :class="{ active: activeCateId === cate.id }"
+          @click="switchCategory(cate.id)">
+          {{ cate.name }}
         </div>
       </div>
-    </van-popup>
-  </div>
+      <!-- 右侧科目列表 -->
+      <div class="right-account">
+        <div v-for="acc in currentAccountList" :key="acc.id" class="acc-item" @click="selectAccount(acc)">
+          {{ acc.text }}
+        </div>
+      </div>
+    </div>
+  </van-popup>
 </template>
 
 <script lang="ts" setup>
 import { ref, reactive, onMounted } from 'vue'
 import { showToast } from 'vant'
 import axios from 'axios'
+
+const stickyOffsetTop = Number.parseFloat(
+  getComputedStyle(document.documentElement).getPropertyValue('--van-tabbar-height')
+) || 0
 
 const showAccountPicker = ref(false)
 const currentEntryIndex = ref(0)
@@ -146,7 +94,7 @@ const initVoucher = () => {
     description: '',
     status: '草稿',
     ifrsBasis: 'IFRS',
-    entries: []
+    entries: [],
   }
 }
 
@@ -154,6 +102,12 @@ const initVoucher = () => {
 const getLocalISODate = (date: Date) => {
   return new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().split('T')[0]
 }
+
+const list = reactive<{
+  indexList: number[];
+}>({
+  indexList: [1, 2, 3]
+})
 
 const voucher = reactive<Voucher>(initVoucher())
 const entries = ref([
@@ -171,6 +125,7 @@ interface Voucher {
 
 // 加载科目
 onMounted(() => {
+
   axios.get('/account/accounts').then(res => {
     rawAccountList.value = res.data.map((item: { code: string; name: string; id: number; type?: string }) => ({
       text: `${item.code} ${item.name}`,
@@ -277,23 +232,10 @@ const submit = () => {
 </script>
 
 <style scoped>
-.page-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow-y: auto;
-  padding-top: 46px;
-  box-sizing: border-box;
-}
 
-.content {
-  padding: 0 12px 20px;
-}
 
 .title {
-  padding: 10px 2px;
+  padding: 10px 10px;
   font-weight: bold;
 }
 
