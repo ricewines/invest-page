@@ -3,6 +3,10 @@
 ## 1 配置 Node.js 环境变量（IDE内置Node）
 
 ```shell
+edit D:\Users\CXH\data\secret\.env.secret.txt
+```
+
+```shell
 Get-Content D:\Users\CXH\data\secret\.env.secret.txt | ForEach-Object {$l=$_.Trim();if($l -and !$l.StartsWith("#")){$i=$l.IndexOf('=');$k=$l.Substring(0,$i).Trim();$v=$l.Substring($i+1).Trim();[Environment]::SetEnvironmentVariable($k,$v,"Process")}} ; 
 echo "QAZCXH_163_COM_MAIL_PASSWORD=$env:QAZCXH_163_COM_MAIL_PASSWORD";
 echo "ZHI_PU_AI_API_KEY=$env:ZHI_PU_AI_API_KEY";
@@ -16,10 +20,15 @@ npm -v;
 cd ~/IdeaProjects/ricewines/invest-page
 ```
 
+```shell
+cd ~/IdeaProjects/ricewines/invest-page/accounting-page/;
+npm version patch;
+```
+
 ## 3 Git 提交代码 + 打版本标签
 
 ```shell
-git add . ; git commit -m "#27 保存凭证按钮在很底部,请做调整." ; git tag -a v$env:INVEST_VERSION -m "发布版本$env:INVEST_VERSION" ;
+git add . ; git commit -m "体验后增加功能 #7" ; git tag -a v$env:INVEST_VERSION -m "发布版本$env:INVEST_VERSION" ;
 git push origin v$env:INVEST_VERSION ; git push origin dev_chixh ;
 ```
 

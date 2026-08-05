@@ -59,7 +59,8 @@
       </div>
       <!-- 右侧科目列表 -->
       <div class="right-account">
-        <div v-for="acc in currentAccountList" :key="acc.id" class="acc-item" @click="selectAccount(acc)">
+        <van-field v-model="accountSearch" placeholder="搜索科目/编码" clearable style="margin:8px 12px;" />
+        <div v-for="acc in filteredAccountList" :key="acc.value" class="acc-item" @click="selectAccount(acc)">
           {{ acc.text }}
         </div>
       </div>
@@ -68,7 +69,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import { showToast } from 'vant'
 import axios from 'axios'
 
@@ -82,6 +83,7 @@ const rawAccountList = ref<any[]>([])
 const categoryList = ref<any[]>([])
 const currentAccountList = ref<any[]>([])
 const activeCateId = ref<number>()
+const accountSearch = ref('')
 
 const totalDebit = ref(0)
 const totalCredit = ref(0)
@@ -111,6 +113,7 @@ const list = reactive<{
 
 const voucher = reactive<Voucher>(initVoucher())
 const entries = ref([
+  { accountName: '', accountId: null, debit: '', credit: '', remark: '' },
   { accountName: '', accountId: null, debit: '', credit: '', remark: '' }
 ])
 
@@ -159,12 +162,53 @@ const switchCategory = (cateId: number) => {
   currentAccountList.value = rawAccountList.value.filter(item => item.category === targetCate?.name)
 }
 
+// 根据搜索词计算显示的科目列表：
+// - 若有搜索词，则在全部科目中全局匹配（code+name）
+// - 否则显示当前分类的科目
+const filteredAccountList = computed(() => {
+  const q = accountSearch.value.trim().toLowerCase()
+  if (!q) return currentAccountList.value
+  return rawAccountList.value.filter(item => item.text.toLowerCase().includes(q))
+})
+
 // 选择科目
 const selectAccount = (acc: any) => {
-  const entry = entries.value[currentEntryIndex.value]
+  const idx = currentEntryIndex.value
+  const entry = entries.value[idx]
   entry.accountName = acc.text
   entry.accountId = acc.value
   showAccountPicker.value = false
+
+  // 自动平衡逻辑（仅在两笔分录时启用）：
+  // 当一方已有借/贷金额且另一方金额为空时，选完科目后自动把数值填到对方相反栏位
+  if (entries.value.length === 2) {
+    const otherIdx = idx === 0 ? 1 : 0
+    const other = entries.value[otherIdx]
+
+    // 优先使用已有的对方金额去填当前项的相反栏位
+    if (other.debit !== '' && (entry.credit === '' || entry.credit == null)) {
+      entry.credit = other.debit
+      calcTotal()
+      return
+    }
+    if (other.credit !== '' && (entry.debit === '' || entry.debit == null)) {
+      entry.debit = other.credit
+      calcTotal()
+      return
+    }
+
+    // 否则如果当前项已有金额，则填充另一项的相反栏位
+    if (entry.debit !== '' && (other.credit === '' || other.credit == null)) {
+      other.credit = entry.debit
+      calcTotal()
+      return
+    }
+    if (entry.credit !== '' && (other.debit === '' || other.debit == null)) {
+      other.debit = entry.credit
+      calcTotal()
+      return
+    }
+  }
 }
 
 const openAccountPicker = (index: number) => {
@@ -219,9 +263,12 @@ const submit = () => {
   axios.post('/voucher/create', voucher).then(() => {
     showToast('✅ 凭证保存成功')
 
-    // 自动新开空白凭证
+    // 自动新开空白凭证（两笔起步）
     Object.assign(voucher, initVoucher())
-    entries.value = [{ accountName: '', accountId: null, debit: '', credit: '', remark: '' }]
+    entries.value = [
+      { accountName: '', accountId: null, debit: '', credit: '', remark: '' },
+      { accountName: '', accountId: null, debit: '', credit: '', remark: '' }
+    ]
     calcTotal()
 
   }).catch(err => {
