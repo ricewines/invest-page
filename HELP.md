@@ -20,15 +20,10 @@ npm -v;
 cd ~/IdeaProjects/ricewines/invest-page
 ```
 
-```shell
-cd ~/IdeaProjects/ricewines/invest-page/accounting-page/;
-npm version patch;
-```
-
 ## 3 Git 提交代码 + 打版本标签
 
 ```shell
-git add . ; git commit -m "体验后增加功能 #7" ; git tag -a v$env:INVEST_VERSION -m "发布版本$env:INVEST_VERSION" ;
+git add . ; git commit -m "体验后增加功能 resolve #7" ; git tag -a v$env:INVEST_VERSION -m "发布版本$env:INVEST_VERSION" ;
 git push origin v$env:INVEST_VERSION ; git push origin dev_chixh ;
 ```
 
