@@ -20,10 +20,14 @@ npm -v;
 cd ~/IdeaProjects/ricewines/invest-page
 ```
 
+```shell
+cd accounting-page ; npm run build ; cd ../invest-admin-page ; npm run build ; cd ..;
+```
+
 ## 3 Git 提交代码 + 打版本标签
 
 ```shell
-git add . ; git commit -m "保持版本号一致" ; git tag -a v$env:INVEST_VERSION -m "发布版本$env:INVEST_VERSION" ;
+git add . ; git commit -m "做邮箱订阅功能 #29" ; git tag -a v$env:INVEST_VERSION -m "发布版本$env:INVEST_VERSION" ;
 git push origin v$env:INVEST_VERSION ; git push origin dev_chixh ;
 ```
 

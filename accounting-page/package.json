@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -b && vite build",
+    "build": "vite build",
     "npm-install": "npm install",
     "preview": "vite preview",
     "update-check": "npm install --no-save npm-check && npm-check -u"
@@ -16,7 +16,6 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.8",
-    "@vue/tsconfig": "^0.9.1",
-    "vue-tsc": "^3.3.11"
+    "@vue/tsconfig": "^0.9.1"
   }
 }
