@@ -1,6 +1,6 @@
 {
   "name": "invest-admin-page",
-  "version": "0.1.30",
+  "version": "0.1.34",
   "type": "module",
   "scripts": {
     "dev": "vite",
