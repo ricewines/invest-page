@@ -67,7 +67,7 @@ cd invest-admin-page ; npm run build ; cd ..;
 ## 3 Git 提交代码 + 打版本标签
 
 ```shell
-git add . ; git commit -m "做邮箱订阅功能 #29" ; 
+git add . ; git commit -m "更新版本 #30" ; 
 # 拉取主线代码变基
 git pull origin main --rebase ;
 git tag -a v$env:INVEST_VERSION -m "发布版本$env:INVEST_VERSION" ;
