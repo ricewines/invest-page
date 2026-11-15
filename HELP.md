@@ -67,7 +67,7 @@ cd invest-admin-page ; npm run build ; cd ..;
 ## 3 Git 提交代码 + 打版本标签
 
 ```shell
-git add . ; git commit -m "feat: 短信实时转发和历史查看，closes #41" ; 
+git add . ; git commit -m "feat: 增加与短信宝的匹配接口POST (JSON)，closes #41" ; 
 # 拉取主线代码变基
 git pull origin main --rebase ;
 git tag -a v$env:INVEST_VERSION -m "发布版本$env:INVEST_VERSION" ;
