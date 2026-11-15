@@ -1,6 +1,6 @@
 {
   "name": "invest-admin-page",
-  "version": "0.1.41",
+  "version": "0.1.42",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,10 +10,10 @@
   },
   "dependencies": {
     "vant": "^4.10.2",
-    "vue-router": "^5.4.0"
+    "vue-router": "^5.5.1"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^6.0.10",
+    "@vitejs/plugin-vue": "^6.0.11",
     "@vue/tsconfig": "^0.9.1"
   }
 }

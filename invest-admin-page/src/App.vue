@@ -5,6 +5,7 @@
   <!-- 底部导航（Vant） -->
   <van-tabbar v-model="active" route fixed>
     <van-tabbar-item to="/operation" icon="orders-o">操作</van-tabbar-item>
+    <van-tabbar-item to="/sms-page" icon="comment-o">短信转发</van-tabbar-item>
     <van-tabbar-item to="/config" icon="setting-o">配置</van-tabbar-item>
   </van-tabbar>
 </template>
